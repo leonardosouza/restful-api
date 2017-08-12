@@ -1,0 +1,26 @@
+{
+  "name": "restful-api",
+  "version": "1.0.0",
+  "description": "Implementando uma API RESTful usando NodeJS, Express e MongoDB",
+  "main": "app.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leozaoquaddro/restful-api.git"
+  },
+  "keywords": [],
+  "author": "Leonardo Souza",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leozaoquaddro/restful-api/issues"
+  },
+  "homepage": "https://github.com/leozaoquaddro/restful-api#readme",
+  "dependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^4.4.1",
+    "express": "^4.15.4"
+  }
+}
