@@ -4,7 +4,7 @@
   "description": "Implementando uma API RESTful usando NodeJS, Express e MongoDB",
   "main": "app.js",
   "scripts": {
-    "test": ""
+    "start": "nodemon --exec babel-node app"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,10 @@
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "eslint": "^4.4.1",
-    "express": "^4.15.4"
+    "express": "^4.15.4",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.6",
+    "morgan": "^1.8.2",
+    "nodemon": "^1.11.0"
   }
 }
