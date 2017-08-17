@@ -5,20 +5,22 @@ const morgan = require('morgan')
 const logger = morgan('dev')
 const bodyParser = require('body-parser')
 
+app.set('port', (process.env.PORT || 3000))
+
 // mongoose connection
-const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/todo', { useMongoClient: true })
+// const mongoose = require('mongoose')
+// mongoose.connect('mongodb://localhost/todo', { useMongoClient: true })
 
 // schema
-const Schema = mongoose.Schema
+// const Schema = mongoose.Schema
 
-const TodoSchema = new Schema({
-  description: String,
-  createAt: { type: Date, default: Date.now },
-  done: Boolean
-})
+// const TodoSchema = new Schema({
+//   description: String,
+//   createAt: { type: Date, default: Date.now },
+//   done: Boolean
+// })
 
-const TodoModel = mongoose.model('Todo', TodoSchema)
+// const TodoModel = mongoose.model('todos', TodoSchema)
 
 // middleware
 const requestCurrentTime = (req, res, next) => {
@@ -46,40 +48,40 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/todos', (req, res) => {
-  TodoModel.find({}, (err, docs) => {
-    if (err) res.sendStatus(404)
-    res.json(docs)
-  })
-})
+// app.get('/todos', (req, res) => {
+//   TodoModel.find({}, (err, docs) => {
+//     if (err) res.sendStatus(404)
+//     res.json(docs)
+//   })
+// })
 
-app.get('/todos/:id', (req, res) => {
-  TodoModel.findById(req.params.id, (err, docs) => {
-    if(err) res.sendStatus(404)
-    res.status(200).json(docs)
-  })
-})
+// app.get('/todos/:id', (req, res) => {
+//   TodoModel.findById(req.params.id, (err, docs) => {
+//     if(err) res.sendStatus(404)
+//     res.status(200).json(docs)
+//   })
+// })
 
-app.post('/todos', (req, res) => {
-  TodoModel.create(req.body, (err, docs) => {
-    if (err) res.sendStatus(412)
-    res.status(201).json(docs)
-  })
-})
+// app.post('/todos', (req, res) => {
+//   TodoModel.create(req.body, (err, docs) => {
+//     if (err) res.sendStatus(412)
+//     res.status(201).json(docs)
+//   })
+// })
 
-app.put('/todos/:id', (req, res) => {
-  TodoModel.findByIdAndUpdate(req.params.id, req.body, (err) => {
-    if (err) res.sendStatus(404)
-    res.sendStatus(204)
-  })
-})
+// app.put('/todos/:id', (req, res) => {
+//   TodoModel.findByIdAndUpdate(req.params.id, req.body, (err) => {
+//     if (err) res.sendStatus(404)
+//     res.sendStatus(204)
+//   })
+// })
 
-app.delete('/todos/:id', (req, res) => {
-  TodoModel.findByIdAndRemove(req.params.id, (err) => {
-    if (err) res.sendStatus(404)
-    res.sendStatus(204)
-  })
-})
+// app.delete('/todos/:id', (req, res) => {
+//   TodoModel.findByIdAndRemove(req.params.id, (err) => {
+//     if (err) res.sendStatus(404)
+//     res.sendStatus(204)
+//   })
+// })
 
 // listen
-app.listen(3000)
+app.listen(app.get('port'))
