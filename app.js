@@ -4,12 +4,16 @@ const moment = require('moment')
 const morgan = require('morgan')
 const logger = morgan('dev')
 const bodyParser = require('body-parser')
+const env = require('node-env-file')
+const fs = require('fs')
+const envFile = `${__dirname}/.env`
+if (fs.existsSync(envFile)) env(envFile)
 
 app.set('port', (process.env.PORT || 3000))
 
 // mongoose connection
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://leonardo:lab123@ds011725.mlab.com:11725/todo', { useMongoClient: true })
+mongoose.connect(process.env.MONGO_CONNECTION, { useMongoClient: true })
 
 // schema
 const Schema = mongoose.Schema
