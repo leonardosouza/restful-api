@@ -9,6 +9,33 @@ const fs = require('fs')
 const envFile = `${__dirname}/.env`
 if (fs.existsSync(envFile)) env(envFile)
 
+
+const formidable = require('formidable')
+const path = require('path')
+const uploadDir = path.join(__dirname, '/uploads/') 
+
+console.log(uploadDir)
+
+
+app.post('/profile', (req, res, next) => {
+  var form = new formidable.IncomingForm()
+  form.multiples = true
+  form.keepExtensions = true
+  form.uploadDir = uploadDir
+
+  form.parse(req, (err, fields, files) => {
+    console.log('parsing...', files)
+    if (err) return res.status(500).json({ error: err })
+    res.status(200).json({ uploaded: true })
+  })
+
+  form.on('fileBegin', function (name, file) {
+    console.log('saving...')
+    const [fileName, fileExt] = file.name.split('.')
+    file.path = path.join(uploadDir, `${fileName}_${new Date().getTime()}.${fileExt}`)
+  })
+})
+
 app.set('port', (process.env.PORT || 3000))
 
 // mongoose connection
@@ -47,45 +74,53 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-// get router
+// post router
+app.post('/profile', (req, res) => {
+  
+  res.end()
+})
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/todos', (req, res) => {
-  TodoModel.find({}, (err, docs) => {
-    if (err) res.sendStatus(404)
-    res.json(docs)
-  })
-})
+// app.get('/todos', (req, res) => {
+//   TodoModel.find({}, (err, docs) => {
+//     if (err) res.sendStatus(404)
+//     res.json(docs)
+//   })
+// })
 
-app.get('/todos/:id', (req, res) => {
-  TodoModel.findById(req.params.id, (err, docs) => {
-    if(err) res.sendStatus(404)
-    res.status(200).json(docs)
-  })
-})
+// app.get('/todos/:id', (req, res) => {
+//   TodoModel.findById(req.params.id, (err, docs) => {
+//     if(err) res.sendStatus(404)
+//     res.status(200).json(docs)
+//   })
+// })
 
-app.post('/todos', (req, res) => {
-  TodoModel.create(req.body, (err, docs) => {
-    if (err) res.sendStatus(412)
-    res.status(201).json(docs)
-  })
-})
+// app.post('/todos', (req, res) => {
+//   TodoModel.create(req.body, (err, docs) => {
+//     if (err) res.sendStatus(412)
+//     res.status(201).json(docs)
+//   })
+// })
 
-app.put('/todos/:id', (req, res) => {
-  TodoModel.findByIdAndUpdate(req.params.id, req.body, (err) => {
-    if (err) res.sendStatus(404)
-    res.sendStatus(204)
-  })
-})
+// app.put('/todos/:id', (req, res) => {
+//   TodoModel.findByIdAndUpdate(req.params.id, req.body, (err) => {
+//     if (err) res.sendStatus(404)
+//     res.sendStatus(204)
+//   })
+// })
 
-app.delete('/todos/:id', (req, res) => {
-  TodoModel.findByIdAndRemove(req.params.id, (err) => {
-    if (err) res.sendStatus(404)
-    res.sendStatus(204)
-  })
-})
+// app.delete('/todos/:id', (req, res) => {
+//   TodoModel.findByIdAndRemove(req.params.id, (err) => {
+//     if (err) res.sendStatus(404)
+//     res.sendStatus(204)
+//   })
+// })
+
+require('./routes/todos')(app, TodoModel)
+
 
 // listen
 app.listen(app.get('port'))
